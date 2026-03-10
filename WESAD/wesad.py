@@ -39,7 +39,7 @@ def extract_eda_features(eda, fs):
     return len(peaks), auc, np.mean(tonic)
 
 # ========================================================
-# 3. FUNCIONES DE EXTRACCIÓN (HRV - Corazón)
+# 3. FUNCIONES DE EXTRACCIÓN (HRV - Corazón) VERSIÓN EXTENDIDA
 # ========================================================
 def build_hrv_table(subject):
     ecg = subject["signal"]["chest"]["ECG"]
@@ -66,11 +66,15 @@ def build_hrv_table(subject):
 
             label_bin = np.bincount((labels[start:end] == 2).astype(int)).argmax()
 
+            # ¡AQUÍ ESTÁ LA MAGIA! Agregamos MeanNN, LF y HF
             rows.append({
                 "Time": (start + end) / 2 / FS,
                 "Label": label_bin,
                 "HRV_RMSSD": hrv_t["HRV_RMSSD"].values[0],
                 "HRV_SDNN": hrv_t["HRV_SDNN"].values[0],
+                "HRV_MeanNN": hrv_t["HRV_MeanNN"].values[0], # Novedad
+                "HRV_LF": hrv_f["HRV_LF"].values[0],         # Novedad
+                "HRV_HF": hrv_f["HRV_HF"].values[0],         # Novedad
                 "HRV_LFHF": hrv_f["HRV_LFHF"].values[0]
             })
         except: continue

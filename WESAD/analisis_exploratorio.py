@@ -2,7 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. Cargar el dataset que generaste en el Punto 1
+# ==========================================
+# 1. Cargar el dataset NUEVO del Punto 1
+# ==========================================
 print("Cargando datos...")
 df = pd.read_csv("wesad_features_punto1.csv")
 
@@ -19,29 +21,38 @@ for clase, (cant, porc) in enumerate(zip(conteo, porcentaje)):
 plt.figure(figsize=(6, 4))
 sns.countplot(data=df, x='Label', palette='Set2')
 plt.title('Balance de Clases (0: No-Estrés, 1: Estrés)')
+plt.tight_layout()
+plt.savefig("barras_actualizado.png") # Guarda la imagen automáticamente
 plt.show()
 
 # ==========================================
 # 3. Distribución de Características y Outliers
 # ==========================================
-# Excluimos las columnas que no son señales numéricas para los boxplots
-features = ['EDA_SCR', 'EDA_AUC', 'EDA_Tonic', 'HRV_RMSSD', 'HRV_SDNN', 'HRV_LFHF']
+# Ahora incluimos TODAS las señales que extrajiste
+features = [
+    'EDA_SCR', 'EDA_AUC', 'EDA_Tonic', 
+    'HRV_RMSSD', 'HRV_SDNN', 'HRV_MeanNN', 
+    'HRV_LF', 'HRV_HF', 'HRV_LFHF'
+]
 
-plt.figure(figsize=(15, 10))
+# Ajustamos la cuadrícula a 3x3 para que quepan las 9 variables
+plt.figure(figsize=(15, 12))
 for i, col in enumerate(features, 1):
-    plt.subplot(2, 3, i)
-    # Comparamos la distribución de cada característica entre las dos clases
+    plt.subplot(3, 3, i)
     sns.boxplot(data=df, x='Label', y=col, palette='Set2')
     plt.title(f'Distribución de {col}')
 plt.tight_layout()
+plt.savefig("boxplots_actualizado.png") # Guarda la imagen automáticamente
 plt.show()
 
 # ==========================================
 # 4. Matriz de Correlación
 # ==========================================
-plt.figure(figsize=(8, 6))
-# Calculamos la correlación solo numéricas
+# Hacemos la gráfica un poco más grande para que los números se lean bien
+plt.figure(figsize=(10, 8))
 correlacion = df[features].corr()
 sns.heatmap(correlacion, annot=True, cmap='coolwarm', fmt=".2f", vmin=-1, vmax=1)
 plt.title('Matriz de Correlación de Características')
+plt.tight_layout()
+plt.savefig("heatmap_actualizado.png") # Guarda la imagen automáticamente
 plt.show()
