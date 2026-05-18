@@ -51,12 +51,20 @@ for i, (nombre, clf) in enumerate(modelos.items()):
     # Predicción
     y_pred = clf.predict(X_test)
     
-    # Cálculo de Métricas
+    # Cálculo de Métricas Generales
     acc = accuracy_score(y_test, y_pred)
-    prec = precision_score(y_test, y_pred)
-    rec = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
+    
+    # Métricas para la Clase 1 (Estrés / "Sí")
+    prec_1 = precision_score(y_test, y_pred, pos_label=1)
+    rec_1 = recall_score(y_test, y_pred, pos_label=1)
+    f1_1 = f1_score(y_test, y_pred, pos_label=1)
+    
+    # Métricas para la Clase 0 (No-Estrés / "No")
+    prec_0 = precision_score(y_test, y_pred, pos_label=0)
+    rec_0 = recall_score(y_test, y_pred, pos_label=0)
+    f1_0 = f1_score(y_test, y_pred, pos_label=0)
+    
     print(f"\nMatriz de confusión ({nombre}):")
     print(cm)
     print("Reporte de clasificación:")
@@ -65,9 +73,10 @@ for i, (nombre, clf) in enumerate(modelos.items()):
     resultados.append({
         "Modelo": nombre,
         "Accuracy": acc,
-        "Precision": prec,
-        "Recall": rec,
-        "F1-Score": f1
+        "Recall (0: No-Estrés)": rec_0,
+        "Recall (1: Estrés)": rec_1,
+        "F1 (0: No-Estrés)": f1_0,
+        "F1 (1: Estrés)": f1_1
     })
     
     # Graficar Matriz de Confusión
@@ -80,7 +89,6 @@ for i, (nombre, clf) in enumerate(modelos.items()):
 plt.tight_layout()
 plt.savefig("matrices_confusion_punto3.png")
 plt.show()
-
 # ========================================================
 # 5. REPORTE FINAL DE RESULTADOS
 # ========================================================
