@@ -46,3 +46,13 @@ plt.ylabel('Cantidad de Estudiantes')
 plt.savefig('./results/StressLevel/depresion_categorica.png')
 plt.close()
 
+plt.figure(figsize=(10, 6))
+sns.countplot(x='anxiety_level', data=df, palette='magma')
+plt.title('Distribución de Niveles de Ansiedad')
+plt.xlabel('Nivel de Ansiedad')
+plt.ylabel('Cantidad de Estudiantes')
+plt.savefig('./results/StressLevel/distribucion_ansiedad.png')
+plt.close()
+
+print("DIstribucionde nivel de ansiedad")
+print(df['anxiety_level'].value_counts())
